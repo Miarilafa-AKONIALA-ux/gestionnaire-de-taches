@@ -20,10 +20,20 @@ body {
     padding: 40px 20px;
 }
 
+.tete {
+    border: solid var(--accent-color);
+    margin-top: 50px;
+    padding: 50px;
+    border-radius: 6px;
+    background: #6365f123;
+    min-width: 470px;
+}
+
 .monInput {
     background-color: #1E293B;
-    margin-top: 10px;
-    padding: 10px 15px;
+    margin-top: 50px;
+    min-width: 250px;
+    padding: 20px 15px;
     border: none;
     color: var(--text-main);
     border-radius: 6px 0 0 6px;
@@ -34,7 +44,7 @@ body {
     background-color: var(--accent-color);
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 20px 15px;
     border-radius: 0 6px 6px 0;
     cursor: pointer;
     font-weight: bold;
@@ -48,8 +58,7 @@ body {
 ul {
     list-style-type: none;
     padding: 0;
-    width: 100%;
-    max-width: 550px;
+    min-width: 580px;
     margin: 20px auto 0 auto;
 }
 
@@ -59,6 +68,7 @@ ul {
     width: 100%;
     margin-bottom: 10px;
     align-items: center;
+    font-size: 1vw;
 }
 
 .item-tache {
@@ -91,7 +101,7 @@ ul {
 
 #modifier {
     border-radius: 0;
-    background-color: var(--card-color);
+    background-color: #6365f130;
     color: #38BDF8;
     transition: background 0.2s;
 }
@@ -109,3 +119,14 @@ ul {
     background-color: #991b1b;
 }
 
+@media (max-width: 768px) {
+    ul {
+        min-width: 70vw;
+    }
+    .monInput {
+        min-width: 10vw;
+    }
+    .tete {
+        min-width: 53vw;
+    }
+}

@@ -87,7 +87,8 @@ function App() {
 
   return (
     <div className='body'>
-      <h1>Mon Application</h1>
+      <h1>Gestions des tâches </h1>
+      <p>Gerer votres tâches facilement et rapidement</p>
 
       <State
         valeurActuelle = {saisie}
@@ -96,7 +97,7 @@ function App() {
       />
 
       <div>
-        <h3>vos taches :</h3>
+        <h3>votres taches :</h3>
         
         {affiche.length === 0 ? (
           <p>En attente d'une nouvelle tache...</p>
