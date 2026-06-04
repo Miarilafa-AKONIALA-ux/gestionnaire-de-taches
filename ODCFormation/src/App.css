@@ -8,6 +8,8 @@
 
 body {
     background: url("./assets/fond.png");
+    background-repeat: no-repeat;
+    background-size: cover;
     color: var(--text-main);
     margin: 0;
     font-family: sans-serif;
@@ -33,6 +35,7 @@ body {
     background-color: #1E293B;
     margin-top: 50px;
     min-width: 250px;
+    font-size: 0.9rem;
     padding: 20px 15px;
     border: none;
     color: var(--text-main);
@@ -44,6 +47,7 @@ body {
     background-color: var(--accent-color);
     color: white;
     border: none;
+    font-size: 0.9rem;
     padding: 20px 15px;
     border-radius: 0 6px 6px 0;
     cursor: pointer;
@@ -119,12 +123,19 @@ ul {
     background-color: #991b1b;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
     ul {
         min-width: 70vw;
     }
     .monInput {
+        width: 30vw;
         min-width: 10vw;
+        font-size: 14px;
+        padding: 15px 0 15px 5px;
+    }
+    .ajouter {
+        font-size: 14px;
+        padding: 15px;
     }
     .tete {
         min-width: 53vw;
