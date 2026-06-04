@@ -1,0 +1,111 @@
+:root {
+  --bg-color: #121824;
+  --card-color: #1E293B;
+  --accent-color: #6366F1;
+  --action-color: #0EA5E9;
+  --text-main: #F8FAFC;
+}
+
+body {
+    background: url("./assets/fond.png");
+    color: var(--text-main);
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.monInput {
+    background-color: #1E293B;
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    color: var(--text-main);
+    border-radius: 6px 0 0 6px;
+    outline: none;
+}
+
+.ajouter {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.ajouter:hover {
+    background-color: #4f46e5;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    max-width: 550px;
+    margin: 20px auto 0 auto;
+}
+
+.tache {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    width: 100%;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.item-tache {
+    margin: 0;
+    background-color: var(--card-color);
+    color: var(--text-main);
+    padding: 12px 15px;
+    border-radius: 6px 0 0 6px;
+    border-left: 4px solid var(--accent-color);
+    font-size: 1rem;
+    text-align: left;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.item-tache.barre {
+    text-decoration: line-through;
+    color: #64748b;
+    background-color: #0f172a;
+    border-left-color: #475569;
+}
+
+.bouton {
+    padding: 12px 15px;
+    border-style: none;
+    cursor: pointer;
+    font-weight: 500;
+    height: 100%;
+}
+
+#modifier {
+    border-radius: 0;
+    background-color: var(--card-color);
+    color: #38BDF8;
+    transition: background 0.2s;
+}
+#modifier:hover {
+    background-color: #2d3748;
+}
+
+#effacer {
+    border-radius: 0 6px 6px 0;
+    background-color: #7f1d1d;
+    color: #fca5a5;
+    transition: background 0.2s;
+}
+#effacer:hover {
+    background-color: #991b1b;
+}
+
