@@ -7,7 +7,7 @@ function App() {
   const [affiche, setAffiche] = useState([]);
 
   const chargertache = () => {
-    fetch('http://localhost:5000/api/taches')
+    fetch('https://backen-api-yxf6.onrender.com/api/taches')
     .then((res) => res.json())
     .then((data) => {
       setAffiche(data);
@@ -22,7 +22,7 @@ function App() {
   const validation = () => {
     if (saisie.trim() === "") return;
 
-    fetch('http://localhost:5000/api/taches', {
+    fetch('https://backen-api-yxf6.onrender.com/api/taches', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ texte: saisie})
@@ -36,7 +36,7 @@ function App() {
   };
 
   const check = (id) => {
-    fetch(`http://localhost:5000/api/taches/${id}/check`, {
+    fetch(`https://backen-api-yxf6.onrender.com/api/taches/${id}/check`, {
       method: 'PUT'
     })
     .then(() => {
@@ -52,7 +52,7 @@ function App() {
   };
 
   const supprimer = (id) => {
-      fetch(`http://localhost:5000/api/taches/${id}`, {
+      fetch(`https://backen-api-yxf6.onrender.com/api/taches/${id}`, {
         method: 'DELETE'
       })
         .then(() => {
@@ -67,7 +67,7 @@ function App() {
     const nouveauTexte = prompt("Modifier votre tache :", texteActuel);
 
     if (nouveauTexte !== null && nouveauTexte.trim() !== "") {
-      fetch(`http://localhost:5000/api/taches/${id}`, {
+      fetch(`https://backen-api-yxf6.onrender.com/api/taches/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ texte: nouveauTexte })
