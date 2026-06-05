@@ -19,69 +19,104 @@ function App() {
     chargertache();
   }, []);
 
-  const validation = () => {
+  const validation = async () => {
     if (saisie.trim() === "") return;
 
-    fetch('https://backen-api-yxf6.onrender.com/api/taches', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ texte: saisie})
-    })
-    .then((res) => res.json())
-    .then((nouvelleTache) => {
-      setAffiche([...affiche, nouvelleTache]);
-      setSaisie("");
-    })
-    .catch((err) => console.error("Erreur lors de l'ajout :", err));
-  };
+    const tacheOptimiste = {
+      id: Date.now(), // ID temporaire
+      texte: saisie,
+      termine: false
+    };
 
-  const check = (id) => {
-    fetch(`https://backen-api-yxf6.onrender.com/api/taches/${id}/check`, {
-      method: 'PUT'
-    })
-    .then(() => {
-      const tableauModifie = affiche.map((tache) => {
-        if (tache.id === id) {
-          return { ...tache, termine : !tache.termine };
-        }
-        return tache;
+    const ancienAffichage = [...affiche];
+    setAffiche([...affiche, tacheOptimiste]);
+    setSaisie("");
+
+    try {
+      const response = await fetch('https://backen-api-yxf6.onrender.com/api/taches', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ texte: tacheOptimiste.texte })
       });
-      setAffiche(tableauModifie);
-    })
-    .catch((err) => console.error("Erreur lors de la mise a jour du statut :", err)); 
+
+      if (!response.ok) throw new Error("Erreur lors de l'ajout");
+      
+      const vraieTache = await response.json();
+      // On remplace l'ID temporaire par le vrai ID généré par PostgreSQL
+      setAffiche((prev) => prev.map(t => t.id === tacheOptimiste.id ? vraieTache : t));
+
+    } catch (error) {
+      console.error(error);
+      setAffiche(ancienAffichage);
+      alert("Impossible d'ajouter la tâche.");
+    }
   };
 
-  const supprimer = (id) => {
-      fetch(`https://backen-api-yxf6.onrender.com/api/taches/${id}`, {
-        method: 'DELETE'
-      })
-        .then(() => {
-          // Filtre le tableau en retirant la tâche qui correspond à cet id
-          const tableauClean = affiche.filter((tache) => tache.id !== id);
-          setAffiche(tableauClean);
-        })
-        .catch((err) => console.error("Erreur lors de la suppression :", err));
-    }
+  const check = async (id) => {
+    const ancienAffichage = [...affiche];
 
-  const modifier = (id, texteActuel) => {
+    setAffiche(
+      affiche.map((tache) =>
+        tache.id === id ? { ...tache, termine: !tache.termine } : tache
+      )
+    );
+    try {
+      const response = await fetch(`https://backen-api-yxf6.onrender.com/api/taches/${id}/check`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (!response.ok) throw new Error("Erreur de changement de statut");
+    } catch (error) {
+      console.error(error);
+      setAffiche(ancienAffichage);
+      alert("Impossible de modifier la tâche.");
+    }
+  };
+
+  const supprimer = async (id) => {
+    const ancienAffichage = [...affiche];
+    setAffiche(affiche.filter((tache) => tache.id !== id));
+    
+    try {
+      const response = await fetch(`https://backen-api-yxf6.onrender.com/api/taches/${id}`, {
+        method: 'DELETE'
+      });
+
+      if (!response.ok) throw new Error("Erreur lors de la suppression");
+    } catch (error) {
+      console.error(error);
+      setAffiche(ancienAffichage);
+      alert("Impossible de supprimer la tâche.");
+    }
+  }
+
+  const modifier = (id, texteActuel, statutActuel) => {
     const nouveauTexte = prompt("Modifier votre tache :", texteActuel);
 
     if (nouveauTexte !== null && nouveauTexte.trim() !== "") {
+      const ancienAffichage = [...affiche];
+      setAffiche(affiche.map((tache) => 
+        tache.id === id ? { ...tache, texte: nouveauTexte } : tache
+      ));
+
       fetch(`https://backen-api-yxf6.onrender.com/api/taches/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ texte: nouveauTexte })
+        body: JSON.stringify({ texte: nouveauTexte, termine: statutActuel })
       })
-      .then(() => {
-        const tableauModifier = affiche.map((tache) => {
-        if (tache.id === id) {
-          return { ...tache, texte: nouveauTexte };
-        }
-        return tache;
+      // .then(() => {
+      //   const tableauModifier = affiche.map((tache) => {
+      //   if (tache.id === id) {
+      //     return { ...tache, texte: nouveauTexte };
+      //   }
+      //   return tache;
+      // });
+      // setAffiche(tableauModifier);
+      // })
+      .catch((err) => {
+        console.error("Erreur lors de la modification", err)
+        setAffiche(ancienAffichage);
       });
-      setAffiche(tableauModifier);
-      })
-      .catch((err) => console.error("Erreur lors de la modification", err));
     }
   };
 
@@ -116,7 +151,7 @@ function App() {
                   type="button" 
                   className='bouton' 
                   id='modifier'
-                  onClick={() => modifier(tache.id, tache.texte)}
+                  onClick={() => modifier(tache.id, tache.texte, tache.termine)}
                 >
                   modifier
                 </button>
